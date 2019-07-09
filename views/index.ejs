@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<title>Message Board</title>
+</head>
+<body>
+	<div class="bg-secondary">
+		<h1>The Dojo Message Board</h1>
+		<hr>
+		<br>
+	</div>
+	<div class="container">
+		<div class="container border rounded mt-4">
+			<form method="POST" action="/message_post"class="p-2">
+				<div class="form-group row">
+					<label for="name">Name</label>
+					<input type="text" class="form-control" name="name" placeholder="Enter name">
+				</div>
+				<div class="form-group row">
+					<label for="message">Message</label>
+					<textarea name="message" class="form-control" rows="3"></textarea>
+				</div>
+				<button type="submit" class="btn btn-info">Post Message</button>
+			</form>
+		</div>
+		<% for(var msg in messages) { %>
+			<div class="container border rounded mt-4">
+				<h5>Name: <%= messages[msg].name %></h5>
+				<h5>Message: <%= messages[msg].message %></h5>
+				<% if (messages[msg].comments.length > 0) { %> 
+					<% for (var index=0; index < messages[msg].comments.length; index++) { %>
+						<div class="container border rounded">
+							<p>Name: <%= messages[msg].comments[index].name %></p>
+							<p>Comment: <%= messages[msg].comments[index].comment %></p>
+						</div>
+					<% } %>
+				<% } %>
+				<form method="POST" action="/comment_post"class="p-2">
+					<div class="form-group row">
+						<label for="name">Name</label>
+						<input type="text" class="form-control form-control-sm" name="name" placeholder="Enter name">
+					</div>
+					<div class="form-group row">
+						<label for="comment">Comment</label>
+						<textarea name="comment" class="form-control form-control-sm" rows="1"></textarea>
+					</div>
+					<input type="hidden" name="msg_id" value="<%=messages[msg]._id %>">
+					<button type="submit" class="btn btn-outline-info btn-sm">Post Comment</button>
+				</form>
+			</div>
+		<% } %>
+	</div>
+	<div class="bg-secondary">
+		<hr>
+	</div>
+	
+</body>
+</html>
